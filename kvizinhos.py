@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import math
 import random
+from sklearn.metrics.cluster import adjusted_rand_score
 
 #########################################
 # Dado de entrada
@@ -51,7 +52,6 @@ def lerConjuntoDeDados(caminho, conjuntoDados):
 
 def lerConjuntoDadosReal(caminho, conjuntoDadosReal):
 	with open(caminho) as arq:
-		cabecalho = arq.readline()
 
 		for linha in arq:
 			valores = linha.split()
@@ -98,6 +98,8 @@ def main():
 	conjuntoDadosReal = []
 	lerConjuntoDadosReal('../datasets/c2ds1-2spReal.clu', conjuntoDadosReal)
 
+	print(len(conjuntoDadosReal))
+
 	conjuntoDados = []
 	lerConjuntoDeDados('../datasets/c2ds1-2sp.txt', conjuntoDados);
 	
@@ -131,8 +133,23 @@ def main():
 	#	print("\n\n\n")
 
 	for objeto in conjuntoDados:
-		print(repr(objeto))
+		break
+		#print(repr(objeto))
 
+
+	# prepara vetores para calcula AR
+
+	resultado = []
+	for dado in conjuntoDados:
+		resultado.append(dado.cluster)
+
+	
+	esperado = []
+	for dado in conjuntoDadosReal:
+		esperado.append(int(dado[1]))
+		
+	indiceRand = adjusted_rand_score(resultado, esperado)
+	print("AR: " + str(indiceRand))
 
 
 if __name__ == "__main__":
