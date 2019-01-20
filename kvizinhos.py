@@ -17,6 +17,9 @@ class Objeto():
 	def __repr__(self):
 		return(str(self.nome) + " " + str(self.x) + " " + str(self.y) + " " + str(self.cluster))
 
+	def saida(self):
+		return(str(self.nome) + " " + str(self.cluster))
+
 	def distancia(self, x, y):
 		dx = self.x - x
 		dy = self.y - y
@@ -60,6 +63,16 @@ def lerConjuntoDadosReal(caminho, conjuntoDadosReal):
 
 
 #########################################
+# Escreve arquivo de saida
+#########################################
+def escreveParticaoArquivo(caminho, conjuntoDadosReal):
+	with open(caminho, 'w') as arq:
+		for dado in conjuntoDadosReal:
+			arq.write(dado.saida() + "\n")
+		arq.write("\n")
+
+
+#########################################
 # Iteracao para recalcular centroides
 #########################################
 def agrupar(numClusters, conjuntoDados, centroides):
@@ -98,8 +111,6 @@ def main():
 	conjuntoDadosReal = []
 	lerConjuntoDadosReal('../datasets/c2ds1-2spReal.clu', conjuntoDadosReal)
 
-	print(len(conjuntoDadosReal))
-
 	conjuntoDados = []
 	lerConjuntoDeDados('../datasets/c2ds1-2sp.txt', conjuntoDados);
 	
@@ -132,10 +143,6 @@ def main():
 	#		print(repr(objeto))
 	#	print("\n\n\n")
 
-	for objeto in conjuntoDados:
-		break
-		#print(repr(objeto))
-
 
 	# prepara vetores para calcula AR
 
@@ -150,6 +157,8 @@ def main():
 		
 	indiceRand = adjusted_rand_score(resultado, esperado)
 	print("AR: " + str(indiceRand))
+
+	escreveParticaoArquivo('saidak' + str(numClusters) + '.txt', conjuntoDados)
 
 
 if __name__ == "__main__":
