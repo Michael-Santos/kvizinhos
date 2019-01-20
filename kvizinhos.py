@@ -69,7 +69,6 @@ def escreveParticaoArquivo(caminho, conjuntoDadosReal):
 	with open(caminho, 'w') as arq:
 		for dado in conjuntoDadosReal:
 			arq.write(dado.saida() + "\n")
-		arq.write("\n")
 
 
 #########################################
@@ -104,9 +103,9 @@ def agrupar(numClusters, conjuntoDados, centroides):
 # Lê entrada e executa o agrupamento
 #########################################
 def main():
-	numClusters = 2
-	maxInteracoes = 10
 
+	numClusters = (int(input("Digite o valor de k: ")))
+	maxInteracoes = (int(input("Digite o numero de iteracoes: ")))
 
 	conjuntoDadosReal = []
 	lerConjuntoDadosReal('../datasets/c2ds1-2spReal.clu', conjuntoDadosReal)
@@ -158,7 +157,7 @@ def main():
 	indiceRand = adjusted_rand_score(resultado, esperado)
 	print("AR: " + str(indiceRand))
 
-	escreveParticaoArquivo('saidak' + str(numClusters) + '.txt', conjuntoDados)
+	escreveParticaoArquivo('c2ds1-2spK' + str(numClusters) + '.txt', conjuntoDados)
 
 
 if __name__ == "__main__":
