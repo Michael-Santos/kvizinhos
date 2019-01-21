@@ -14,18 +14,22 @@ class Objeto():
 		self.y = y
 		self.cluster = -1
 
+	# representacao do objeto na forma de string
 	def __repr__(self):
 		return(str(self.nome) + " " + str(self.x) + " " + str(self.y) + " " + str(self.cluster))
 
+	# converte para a forma de string para imprimir no arquivo de saida
 	def saida(self):
 		return(str(self.nome) + " " + str(self.cluster))
 
+	# calcula a distancia do objeto até um dado ponto 
 	def distancia(self, x, y):
 		dx = self.x - x
 		dy = self.y - y
 
 		return math.sqrt( dx ** 2 + dy ** 2 )
 
+	# Retorno o indice do melhor centroide
 	def melhorCentroid(self, centroides):
 		menorDistancia = 999999999999;
 		melhorIndice = 0;
@@ -43,6 +47,7 @@ class Objeto():
 #########################################
 # Lê arquivos de entrada
 #########################################
+# Realiza a leitura do conjunto de dados do arquivo entrada
 def lerConjuntoDeDados(caminho, conjuntoDados):
 	with open(caminho) as arq:
 		cabecalho = arq.readline()
@@ -52,7 +57,7 @@ def lerConjuntoDeDados(caminho, conjuntoDados):
 			#print(valores)
 			conjuntoDados.append( Objeto(valores[0], float(valores[1]), float(valores[2])) )
 
-
+# Realiza a leitura do arquivo com os valores corretos das classes
 def lerConjuntoDadosReal(caminho, conjuntoDadosReal):
 	with open(caminho) as arq:
 
@@ -65,6 +70,7 @@ def lerConjuntoDadosReal(caminho, conjuntoDadosReal):
 #########################################
 # Escreve arquivo de saida
 #########################################
+# Escreve os objetos da partão no arquivo de saida
 def escreveParticaoArquivo(caminho, conjuntoDadosReal):
 	with open(caminho, 'w') as arq:
 		for dado in conjuntoDadosReal:
@@ -74,6 +80,7 @@ def escreveParticaoArquivo(caminho, conjuntoDadosReal):
 #########################################
 # Iteracao para recalcular centroides
 #########################################
+# Código que executa a lógica do k-vizinhos a cada iteração
 def agrupar(numClusters, conjuntoDados, centroides):
 	# Associa cada objeto ao cluster com centróide mais próximo 
 	for dado in conjuntoDados:
@@ -128,8 +135,7 @@ def main():
 	]
 	'''
 
-	#exit()
-
+	# Escolhe os k primeiros objetos como centróides
 	centroides = []
 
 	for i in range(numClusters):
@@ -138,22 +144,17 @@ def main():
 	for i in range(maxInteracoes):
 		agrupar(numClusters, conjuntoDados, centroides)
 
-	#	for objeto in conjuntoDados:
-	#		print(repr(objeto))
-	#	print("\n\n\n")
-
-
-	# prepara vetores para calcula AR
-
+	# vetor de resultados para calcula AR
 	resultado = []
 	for dado in conjuntoDados:
 		resultado.append(dado.cluster)
 
-	
+	# vetor com os valores esperados para calcular AR
 	esperado = []
 	for dado in conjuntoDadosReal:
 		esperado.append(int(dado[1]))
 		
+	# calcula Ar
 	indiceRand = adjusted_rand_score(resultado, esperado)
 	print("AR: " + str(indiceRand))
 
